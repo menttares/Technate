@@ -6,6 +6,12 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        if (builder.Environment.IsDevelopment())
+        {
+            builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+        }
+
+
         // Add services to the container.
         builder.Services.AddControllersWithViews();
 

@@ -1,3 +1,15 @@
+using Microsoft.Data.SqlClient;
+using Technate.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
+
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.FileProviders.Physical;
+
 namespace Technate;
 
 public class Program
@@ -5,6 +17,12 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        //получение строки к базе данных
+        string? connectionString = builder.Configuration.GetConnectionString("ADO.NET");
+
+        // Подключение сервиса PostgresDataService
+        builder.Services.AddTransient<PostgresDataService>(_ => new PostgresDataService(connectionString));
 
         if (builder.Environment.IsDevelopment())
         {

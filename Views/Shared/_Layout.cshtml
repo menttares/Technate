@@ -1,49 +1,75 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Technate</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Technate.styles.css" asp-append-version="true" />
 </head>
+
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Technate</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        <div class="header">
+            <div class="header__brand">
+                <a class="header__brand-name" href="#">
+                    <span class="header__half1">Tech</span><span class="header__half2">nate</span>
+                </a>
+            </div>
+            <nav class="header__nav">
+                <a class="header__link" href="#">
+                    главная
+                </a>
+                <a class="header__link" href="#">
+                    мои курсы
+                </a>
+                <a class="header__link" href="#">
+                    о нас
+                </a>
+            </nav>
+            <div class="header__user">
+                <div class="header__user-name">
+                    <a class="header__link">
+                        Username
+                    </a>
+                </div>
+                <div class="header__avatar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <g clip-path="url(#clip0_31_509)">
+                            <path
+                                d="M27.5 15C27.5 16.9891 26.7098 18.8968 25.3033 20.3033C23.8968 21.7098 21.9891 22.5 20 22.5C18.0109 22.5 16.1032 21.7098 14.6967 20.3033C13.2902 18.8968 12.5 16.9891 12.5 15C12.5 13.0109 13.2902 11.1032 14.6967 9.6967C16.1032 8.29018 18.0109 7.5 20 7.5C21.9891 7.5 23.8968 8.29018 25.3033 9.6967C26.7098 11.1032 27.5 13.0109 27.5 15Z"
+                                fill="#50D8D7" />
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M0 20C0 14.6957 2.10714 9.60859 5.85786 5.85786C9.60859 2.10714 14.6957 0 20 0C25.3043 0 30.3914 2.10714 34.1421 5.85786C37.8929 9.60859 40 14.6957 40 20C40 25.3043 37.8929 30.3914 34.1421 34.1421C30.3914 37.8929 25.3043 40 20 40C14.6957 40 9.60859 37.8929 5.85786 34.1421C2.10714 30.3914 0 25.3043 0 20ZM20 2.5C16.7044 2.50018 13.4759 3.43091 10.686 5.18507C7.8961 6.93923 5.65821 9.44553 4.22991 12.4155C2.80161 15.3854 2.24097 18.6983 2.6125 21.9729C2.98403 25.2474 4.27263 28.3505 6.33 30.925C8.105 28.065 12.0125 25 20 25C27.9875 25 31.8925 28.0625 33.67 30.925C35.7274 28.3505 37.016 25.2474 37.3875 21.9729C37.759 18.6983 37.1984 15.3854 35.7701 12.4155C34.3418 9.44553 32.1039 6.93923 29.314 5.18507C26.5241 3.43091 23.2956 2.50018 20 2.5Z"
+                                fill="#50D8D7" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_31_509">
+                                <rect width="40" height="40" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - Technate - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </header>
+
+
+
+    <main class="main" role="main">
+        @RenderBody()
+    </main>
+ 
+
+
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

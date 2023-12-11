@@ -1,0 +1,69 @@
+.welcome {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+
+
+    margin-top: 110px;
+}
+
+
+.welcome__head {
+    color: #50D8D7;
+    font-family: Montserrat;
+    font-size: 2em;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+
+    margin-bottom: 20px;
+}
+
+
+.colum-description {
+    width: 50%;
+}
+
+.welcome__description {
+    color: #263238;
+    font-family: Montserrat;
+    font-size: 1.2em;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-transform: capitalize;
+
+    margin-bottom: 10px;
+}
+
+.welcome__colum svg {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+.welcome__container-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border: 4px solid #f82586;
+    color: #f82586;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+.welcome__container-button:hover {
+    background-color: #f82586;
+    color: #ffffff;
+}

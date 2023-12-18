@@ -1,0 +1,89 @@
+.Menu {
+    display: flex;
+    justify-content: end;
+    gap: 35px;
+
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+}
+
+.Menu__join-button {
+    border-radius: 100px;
+    background: #50D8D7;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+
+    height: 40px;
+    cursor: pointer;
+    text-transform: lowercase;
+    transition: all 500ms ease;
+}
+
+.Menu__join-button:hover {
+    border: 1px solid #50D8D7;
+    background-color: white;
+    color: #50D8D7;
+}
+
+.Menu__join-text {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+.Menu__button-create {
+    border-radius: 100px;
+    background: #8CDE6F;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 20px;
+    height: 40px;
+    cursor: pointer;
+
+    text-transform: lowercase;
+    transition: all 500ms ease;
+}
+
+.Menu__search {
+    display: flex;
+}
+
+.Menu__search-svg {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 40px;
+    background-color: #50D8D7;
+    border-radius: 100px 0px 0px 100px;
+    cursor: pointer;
+}
+
+
+.Menu__button-create:hover {
+    border: 1px solid #8CDE6F;
+    background-color: white;
+    color: #8CDE6F;
+}
+
+.Menu__search-input {
+    border-radius: 0px 100px 100px 0px;
+    border: 0.5px solid #BDBDBD;
+    border-style: solid;
+    border-left: 0px;
+
+}
+
+.Menu__search-input:focus {
+    border: 0.5px solid #BDBDBD;
+}

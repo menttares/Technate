@@ -5,10 +5,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
-
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.FileProviders.Physical;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Technate;
 
@@ -23,6 +26,11 @@ public class Program
 
         // Подключение сервиса PostgresDataService
         builder.Services.AddTransient<PostgresDataService>(_ => new PostgresDataService(connectionString));
+
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(options => options.LoginPath = "/Login/Authorization");
+
+        builder.Services.AddAuthorization();
 
         if (builder.Environment.IsDevelopment())
         {
@@ -42,6 +50,9 @@ public class Program
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
+
+        app.UseAuthentication();   // добавление middleware аутентификации 
+        app.UseAuthorization();   // добавление middleware авторизации 
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();

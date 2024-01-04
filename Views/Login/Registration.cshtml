@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Авторизация";
+    ViewData["Title"] = "Регистрация";
 }
 
 
@@ -7,8 +7,9 @@
     <form class="auth-form__form-container" method="post">
         <div class="auth-form__title">АВТОРИЗАЦИЯ</div>
         <div class="auth-form__description">
-            Введите вашу почту и пароль
+            введите ваши данные
         </div>
+        <input class="auth-form__input" name="username" type="text" placeholder="Имя" />
         <input class="auth-form__input" name="email" type="email" placeholder="Email" />
         <input class="auth-form__input" name="password" type="password" placeholder="Пароль" />
 
@@ -26,11 +27,11 @@
         </div>
         <div class="auth-form__welcome-description">
             <p>
-                у вас нет аккаунт на нашем сайте? Нажмите накнопку, чтобы перейти к регистрации!
+                у вас есть аккаунт на нашем сайте? Нажмите накнопку, чтобы перейти к авторзации!
             </p>
         </div>
         <div class="auth-form__button-invers">
-            <a href="Registration">регистрации</a>
+            <a href="Authorization">авторизация</a>
         </div>
 
 
@@ -40,7 +41,6 @@
 <script>
     const btn = document.getElementById("auth-form__button");
     btn.addEventListener('click', function (e) {
-        Authorization();
+        Registration();
     })
-
 </script>

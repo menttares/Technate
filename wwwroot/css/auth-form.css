@@ -120,7 +120,7 @@
     border: none;
 }
 
-.auth-form__button {
+#auth-form__button {
     color: #FFF;
     text-align: center;
     font-size: 14px;
@@ -138,9 +138,11 @@
     align-items: center;
 
     margin-bottom: 20px;
+
+    cursor: pointer;
 }
 
-.auth-form__button:hover {
+#auth-form__button:hover {
     background: #FFF;
     border: 1px solid #50D8D7;
     color: #50D8D7;
@@ -163,3 +165,12 @@
     justify-content: center;
 }
 
+.auth-form__button-invers > a {
+    text-decoration: none;
+    color: #340068;
+}
+
+.auth-form__button-invers > a:hover {
+    text-decoration: none;
+    color: #FFF;
+}

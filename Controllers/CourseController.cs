@@ -1,37 +1,28 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Technate.Models;
 
 namespace Technate.Controllers;
-
-public class HomeController : Controller
+[Authorize]
+public class CourseController : Controller
 {
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public CourseController(ILogger<HomeController> logger)
     {
         _logger = logger;
     }
 
+
     
-    public IActionResult Index()
+    public IActionResult Main()
     {
 
         return View();
     }
+    
 
-    [Authorize]
-    public IActionResult Courses()
-    {
-        return View();
-    }
-
-    [Authorize]
-    public IActionResult Privacy()
-    {
-        return View();
-    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

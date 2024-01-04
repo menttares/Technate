@@ -7,7 +7,7 @@
         <span class="Menu__join-text">Вступить по коду</span>
     </div>
     <div class="Menu__button-create">
-        <span class="Menu__join-text">создать</span>
+        <span id="Menu__button-create-course" class="Menu__join-text">создать</span>
     </div>
     <div class="Menu__search">
         <div class="Menu__search-svg"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -23,5 +23,24 @@
 
         <input placeholder="поиск..."  class="Menu__search-input" type="text">
 
+    </div>
+</div>
+
+<!-- Всплывающее окно -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Введите информацию о курсе</h2>
+        <form class="modal-form">
+            <label for="courseName">Название курса:</label>
+            <input type="text" id="courseName" name="courseName" required>
+            <br>
+            <label for="courseSubject">Предмет курса:</label>
+            <input type="text" id="courseSubject" name="courseSubject" required>
+
+            <br><br>
+
+            <button type="button" onclick="submitForm()">Создать курс</button>
+        </form>
     </div>
 </div>

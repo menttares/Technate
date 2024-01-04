@@ -32,7 +32,8 @@
             <div class="header__user">
                 <div class="header__user-name">
                     <a class="header__link">
-                        Username
+                        @await Component.InvokeAsync("User")
+
                     </a>
                 </div>
                 <div class="header__avatar">
@@ -61,7 +62,7 @@
     <main class="main" role="main">
         @RenderBody()
     </main>
- 
+
 
 
 
@@ -69,6 +70,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/courses.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 

@@ -14,7 +14,50 @@ public class PostgresDataService
         _connectionString = connectionString;
     }
 
-    public async Task AddUserAsync(string username, string email, string password)
+
+    public async Task<string> CreateCourseAsync(string courseName, string courseSubject, string userEmail)
+    {
+        using (NpgsqlConnection connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (NpgsqlCommand command = new NpgsqlCommand("SELECT create_course(@CourseName, @CourseSubject, @UserEmail)", connection))
+            {
+                command.Parameters.AddWithValue("@CourseName", courseName);
+                command.Parameters.AddWithValue("@CourseSubject", string.IsNullOrEmpty(courseSubject) ? (object)DBNull.Value : courseSubject);
+                command.Parameters.AddWithValue("@UserEmail", userEmail);
+
+                object result = command.ExecuteScalar();
+
+                // Выполняем запрос и получаем результат
+                string courseId = result.ToString();
+                return courseId;
+            }
+        }
+    }
+
+    public int GetUserIdByEmail(string email)
+    {
+        using (NpgsqlConnection connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (NpgsqlCommand command = new NpgsqlCommand("SELECT get_user_id_by_email(@p_email)", connection))
+            {
+                // Добавляем параметры
+                command.Parameters.AddWithValue("@p_email", email);
+
+                // Выполняем запрос и получаем результат
+                var result = command.ExecuteScalar();
+
+                // Проверяем на null и возвращаем результат
+                return result != null ? Convert.ToInt32(result) : -1; // Здесь -1 может быть значением по умолчанию или кодом ошибки в случае отсутствия пользователя
+            }
+        }
+    }
+
+
+    public async Task<int> AddUserAsync(string username, string email, string password)
     {
         using (NpgsqlConnection connection = new NpgsqlConnection(_connectionString))
         {
@@ -22,18 +65,22 @@ public class PostgresDataService
 
             using (NpgsqlCommand command = new NpgsqlCommand("SELECT add_user(@p_username, @p_email, @p_password)", connection))
             {
-                
-
                 // Добавляем параметры
                 command.Parameters.AddWithValue("@p_username", username);
                 command.Parameters.AddWithValue("@p_email", email);
                 command.Parameters.AddWithValue("@p_password", password);
 
-                // Выполняем запрос
-                command.ExecuteNonQuery();
+                // Выполняем запрос и получаем результат
+                object result = command.ExecuteScalar();
+
+                // Преобразуем результат в целое число
+                int newUserId =  Convert.ToInt32(result);
+
+                return newUserId;
             }
         }
     }
+
 
     public string GetUsernameByEmail(string email)
     {

@@ -19,7 +19,24 @@ $(document).ready(function() {
             courseSubject, courseSubject
         }
 
-        // Закрыть всплывающее окно после отправки данных
+        $.ajax({
+            type: 'POST',
+            url: '/Login/Registration', // Укажите URL вашего метода на сервере, который будет обрабатывать аутентификацию
+            data: JSON.stringify(RegisterViewModel),
+            contentType: 'application/json',  // Добавьте эту строку
+            success: function (response) {
+                // Обработка успешного ответа от сервера
+                console.log(response);
+                // Дополнительные действия, например, перенаправление на другую страницу
+                window.location.href = '/Home/Index';
+            },
+            error: function (error) {
+                // Обработка ошибки
+                console.log(error.responseText);
+                // Дополнительные действия при ошибке
+            }
+        });
+        
         closeModal();
     });
 });

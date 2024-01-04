@@ -21,6 +21,12 @@ public class CourseController : Controller
 
         return View();
     }
+
+    // [HttpPost]
+    // public IActionResult CreateCourse([FromBody] CourseViewModel model)
+    // {
+        
+    // }
     
 
 

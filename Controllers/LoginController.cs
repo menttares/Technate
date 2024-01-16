@@ -32,9 +32,9 @@ public class LoginController : Controller
 
         if (!_database.UserExists(model.username))
         {
-            int idUser = await _database.AddUserAsync(model.username, model.email, model.password);
+            int idUser = _database.AddUser(model.username, model.email, model.password);
             var claims = new List<Claim> { 
-                new Claim(ClaimTypes.Name, model.email),
+                new Claim(ClaimTypes.Email, model.email),
                 new Claim("username", model.username),
                 new Claim(ClaimTypes.NameIdentifier, idUser.ToString())
                 };
@@ -65,7 +65,7 @@ public class LoginController : Controller
             }
 
             var claims = new List<Claim> {
-                new Claim(ClaimTypes.Name, model.email),
+                new Claim(ClaimTypes.Email, model.email),
                 new Claim("username", _database.GetUsernameByEmail(model.email)),
                 new Claim(ClaimTypes.NameIdentifier, idUser.ToString())
                 };
@@ -80,7 +80,6 @@ public class LoginController : Controller
         return StatusCode(405);
     }
 
-    //TODO: написать метод выхода из аккаунта
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

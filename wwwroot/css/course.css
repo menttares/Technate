@@ -1,0 +1,10 @@
+@import url(fonts.css);
+@import url(course-panel.css);
+@import url(course-header.css);
+
+body {
+    font-family: 'Montserrat', sans-serif;
+  
+    margin-left: 300px;
+  } 
+  

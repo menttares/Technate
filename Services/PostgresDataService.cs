@@ -3,6 +3,11 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using Npgsql;
 using NpgsqlTypes;
+using Npgsql;
+using System.Collections.Generic;
+using System.Data;
+using Dapper;
+using Technate.Models;
 
 namespace Technate.Services;
 public class PostgresDataService
@@ -15,26 +20,172 @@ public class PostgresDataService
     }
 
 
-    public async Task<string> CreateCourseAsync(string courseName, string courseSubject, string userEmail)
+    public CourseView GetCourseByCode(int courseCode)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            // Вызываем хранимую функцию get_course_by_code
+            var result = connection.QueryFirstOrDefault<CourseView>("SELECT * FROM get_course_by_code(@CourseCode)", new { CourseCode = courseCode });
+
+            return result;
+        }
+    }
+
+    public List<CourseView> GetCoursesByUserEmail(string email)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                // Выполняем запрос
+                using (var command = new NpgsqlCommand("SELECT * FROM get_courses_by_user_email(@email)", connection))
+                {
+                    command.Parameters.AddWithValue("@email", email);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        List<CourseView> courses = new List<CourseView>();
+
+                        while (reader.Read())
+                        {
+                            CourseView course = new CourseView
+                            {
+                                IdCourse = Convert.ToInt32(reader["id_course"]),
+                                CourseName = reader["coursename"].ToString(),
+                                CourseSubject = reader["coursesubject"].ToString(),
+                                CourseCode = Convert.ToInt32(reader["coursecode"]),
+                                DateCreate = Convert.ToDateTime(reader["datecreate"]),
+                                CreatorUsername = reader["creator_username"].ToString(),
+                                StudentsCount = Convert.ToInt64(reader["students_count"])
+                            };
+
+                            Console.WriteLine($"IdCourse: {course.IdCourse}, CourseName: {course.CourseName}, CourseSubject: {course.CourseSubject}, CourseCode: {course.CourseCode}, DateCreate: {course.DateCreate}, CreatorUsername: {course.CreatorUsername}, StudentsCount: {course.StudentsCount}");
+
+                            courses.Add(course);
+                        }
+
+                        return courses;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while reading data: {ex.Message}");
+            Console.WriteLine($"StackTrace: {ex.StackTrace}");
+            Console.WriteLine($"Source: {ex.Source}");
+            Console.WriteLine($"TargetSite: {ex.TargetSite}");
+            return null;
+        }
+    }
+
+
+
+    public List<CourseView> GetCoursesByCreatorEmail(string email)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                // Выполняем запрос
+                using (var command = new NpgsqlCommand("SELECT * from get_courses_by_creator_email(@email)", connection))
+                {
+                    command.Parameters.AddWithValue("@email", email);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        List<CourseView> courses = new List<CourseView>();
+
+                        while (reader.Read())
+                        {
+                            CourseView course = new CourseView
+                            {
+                                IdCourse = Convert.ToInt32(reader["id_course"]),
+                                CourseName = reader["coursename"].ToString(),
+                                CourseSubject = reader["coursesubject"].ToString(),
+                                CourseCode = Convert.ToInt32(reader["coursecode"]),
+                                DateCreate = Convert.ToDateTime(reader["datecreate"]),
+                                CreatorUsername = reader["creator_username"].ToString(),
+                                StudentsCount = Convert.ToInt64(reader["students_count"])
+                            };
+
+                            Console.WriteLine($"IdCourse: {course.IdCourse}, CourseName: {course.CourseName}, CourseSubject: {course.CourseSubject}, CourseCode: {course.CourseCode}, DateCreate: {course.DateCreate}, CreatorUsername: {course.CreatorUsername}, StudentsCount: {course.StudentsCount}");
+
+                            courses.Add(course);
+                        }
+
+                        return courses;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error while reading data: {ex.Message}");
+            Console.WriteLine($"StackTrace: {ex.StackTrace}");
+            Console.WriteLine($"Source: {ex.Source}");
+            Console.WriteLine($"TargetSite: {ex.TargetSite}");
+            return null;
+        }
+    }
+
+    public int AddUserToCourse(int userId, int courseCode)
+    {
+        using (var connection = new NpgsqlConnection(_connectionString))
+        {
+            connection.Open();
+
+            using (var command = new NpgsqlCommand("select add_user_to_course(@user_id, @course_code)", connection))
+            {
+                
+
+                // Добавляем параметры
+                command.Parameters.AddWithValue("@user_id", userId);
+                command.Parameters.AddWithValue("@course_code", courseCode);
+
+                // Добавляем параметр для возвращаемого значения
+                var returnParameter = command.Parameters.Add("@result", NpgsqlDbType.Integer);
+                returnParameter.Direction = ParameterDirection.ReturnValue;
+
+                // Выполняем запрос
+                command.ExecuteNonQuery();
+
+                // Получаем возвращаемое значение
+                int result = Convert.ToInt32(returnParameter.Value);
+
+                return result;
+            }
+        }
+    }
+
+    public int CreateCourse(string courseName, string courseDescription, int userId)
     {
         using (NpgsqlConnection connection = new NpgsqlConnection(_connectionString))
         {
             connection.Open();
 
-            using (NpgsqlCommand command = new NpgsqlCommand("SELECT create_course(@CourseName, @CourseSubject, @UserEmail)", connection))
+            using (NpgsqlCommand command = new NpgsqlCommand("SELECT create_course_and_return_code(@CourseName, @CourseDescription, @UserId)", connection))
             {
                 command.Parameters.AddWithValue("@CourseName", courseName);
-                command.Parameters.AddWithValue("@CourseSubject", string.IsNullOrEmpty(courseSubject) ? (object)DBNull.Value : courseSubject);
-                command.Parameters.AddWithValue("@UserEmail", userEmail);
-
-                object result = command.ExecuteScalar();
+                command.Parameters.AddWithValue("@CourseDescription", string.IsNullOrEmpty(courseDescription) ? (object)DBNull.Value : courseDescription);
+                command.Parameters.AddWithValue("@UserId", userId);
 
                 // Выполняем запрос и получаем результат
-                string courseId = result.ToString();
-                return courseId;
+                object result = command.ExecuteScalar();
+
+                // Преобразуем результат в int
+                int courseCode = Convert.ToInt32(result.ToString());
+                return courseCode;
             }
         }
     }
+
 
     public int GetUserIdByEmail(string email)
     {
@@ -57,7 +208,7 @@ public class PostgresDataService
     }
 
 
-    public async Task<int> AddUserAsync(string username, string email, string password)
+    public int AddUser(string username, string email, string password)
     {
         using (NpgsqlConnection connection = new NpgsqlConnection(_connectionString))
         {
@@ -74,7 +225,7 @@ public class PostgresDataService
                 object result = command.ExecuteScalar();
 
                 // Преобразуем результат в целое число
-                int newUserId =  Convert.ToInt32(result);
+                int newUserId = Convert.ToInt32(result);
 
                 return newUserId;
             }

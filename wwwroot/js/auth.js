@@ -3,12 +3,17 @@ function Registration() {
     var email = $('.auth-form__input[name="email"]').val();
     var password = $('.auth-form__input[name="password"]').val();
 
+    if(email === undefined || password === undefined || username === undefined) {
+        alert("Пустые значения недопустимы");
+    }
+
     // Подготовка данных для отправки на сервер
     var RegisterViewModel = {
         username: username,
         email: email,
         password: password
     };
+    console.log(RegisterViewModel);
 
     $.ajax({
         type: 'POST',
@@ -33,6 +38,9 @@ function Authorization() {
     var email = $('.auth-form__input[name="email"]').val();
     var password = $('.auth-form__input[name="password"]').val();
 
+    if(email === undefined || password === undefined) {
+        alert("Пустые значения недопустимы");
+    }
     // Подготовка данных для отправки на сервер
     var LoginViewModel = {
         email: email,
@@ -52,7 +60,6 @@ function Authorization() {
         error: function (error) {
             // Обработка ошибки
             console.log(error.responseText);
-            // Дополнительные действия при ошибке
         }
     });
 }

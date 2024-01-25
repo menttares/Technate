@@ -52,8 +52,6 @@ public class LoginController : Controller
 
 
         return Ok();
-
-
     }
 
     [HttpPost]
@@ -72,7 +70,7 @@ public class LoginController : Controller
 
         int idUser = _database.UserExists(model.email);
 
-        
+
 
             var claims = new List<Claim> {
                 new Claim(ClaimTypes.Email, model.email),

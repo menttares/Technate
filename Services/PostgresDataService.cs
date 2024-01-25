@@ -240,7 +240,7 @@ public class PostgresDataService
             using (NpgsqlCommand command = new NpgsqlCommand("SELECT get_username_by_email(@Email)", connection))
             {
                 command.Parameters.AddWithValue("@Email", email);
-
+                
                 // Выполняем запрос и получаем результат
                 string username = command.ExecuteScalar() as string;
                 return username;
@@ -271,7 +271,7 @@ public class PostgresDataService
         {
             connection.Open();
 
-            using (NpgsqlCommand command = new NpgsqlCommand("SELECT verify_password(@Email, @Password)", connection))
+            using (NpgsqlCommand command = new NpgsqlCommand("SELECT user_verifyPassword(@Email, @Password)", connection))
             {
                 command.Parameters.AddWithValue("@Email", email);
                 command.Parameters.AddWithValue("@Password", password);

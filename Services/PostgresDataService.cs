@@ -53,12 +53,12 @@ public class PostgresDataService
                             CourseView course = new CourseView
                             {
                                 IdCourse = Convert.ToInt32(reader["id_course"]),
-                                CourseName = reader["coursename"].ToString(),
-                                CourseSubject = reader["coursesubject"].ToString(),
-                                CourseCode = Convert.ToInt32(reader["coursecode"]),
-                                DateCreate = Convert.ToDateTime(reader["datecreate"]),
+                                CourseName = reader["name"].ToString(),
+                                CourseSubject = reader["description"].ToString(),
+                                CourseCode = Convert.ToInt32(reader["code"]),
+                                DateCreate = Convert.ToDateTime(reader["create_date"]),
                                 CreatorUsername = reader["creator_username"].ToString(),
-                                StudentsCount = Convert.ToInt64(reader["students_count"])
+                                StudentsCount = Convert.ToInt64(reader["participants_count"])
                             };
 
                             Console.WriteLine($"IdCourse: {course.IdCourse}, CourseName: {course.CourseName}, CourseSubject: {course.CourseSubject}, CourseCode: {course.CourseCode}, DateCreate: {course.DateCreate}, CreatorUsername: {course.CreatorUsername}, StudentsCount: {course.StudentsCount}");
@@ -105,12 +105,12 @@ public class PostgresDataService
                             CourseView course = new CourseView
                             {
                                 IdCourse = Convert.ToInt32(reader["id_course"]),
-                                CourseName = reader["coursename"].ToString(),
-                                CourseSubject = reader["coursesubject"].ToString(),
-                                CourseCode = Convert.ToInt32(reader["coursecode"]),
-                                DateCreate = Convert.ToDateTime(reader["datecreate"]),
+                                CourseName = reader["name"].ToString(),
+                                CourseSubject = reader["description"].ToString(),
+                                CourseCode = Convert.ToInt32(reader["code"]),
+                                DateCreate = Convert.ToDateTime(reader["create_date"]),
                                 CreatorUsername = reader["creator_username"].ToString(),
-                                StudentsCount = Convert.ToInt64(reader["students_count"])
+                                StudentsCount = Convert.ToInt64(reader["participants_count"])
                             };
 
                             Console.WriteLine($"IdCourse: {course.IdCourse}, CourseName: {course.CourseName}, CourseSubject: {course.CourseSubject}, CourseCode: {course.CourseCode}, DateCreate: {course.DateCreate}, CreatorUsername: {course.CreatorUsername}, StudentsCount: {course.StudentsCount}");
@@ -141,7 +141,7 @@ public class PostgresDataService
 
             using (var command = new NpgsqlCommand("select add_user_to_course(@user_id, @course_code)", connection))
             {
-                
+
 
                 // Добавляем параметры
                 command.Parameters.AddWithValue("@user_id", userId);
@@ -240,7 +240,7 @@ public class PostgresDataService
             using (NpgsqlCommand command = new NpgsqlCommand("SELECT get_username_by_email(@Email)", connection))
             {
                 command.Parameters.AddWithValue("@Email", email);
-                
+
                 // Выполняем запрос и получаем результат
                 string username = command.ExecuteScalar() as string;
                 return username;

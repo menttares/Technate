@@ -3,9 +3,7 @@ using System.Data;
 using Microsoft.Data.SqlClient;
 using Npgsql;
 using NpgsqlTypes;
-using Npgsql;
 using System.Collections.Generic;
-using System.Data;
 using Dapper;
 using Technate.Models;
 
@@ -193,7 +191,7 @@ public class PostgresDataService
         {
             connection.Open();
 
-            using (NpgsqlCommand command = new NpgsqlCommand("SELECT get_user_id_by_email(@p_email)", connection))
+            using (NpgsqlCommand command = new NpgsqlCommand("SELECT user_exists_on_email(@p_email)", connection))
             {
                 // Добавляем параметры
                 command.Parameters.AddWithValue("@p_email", email);
@@ -214,7 +212,7 @@ public class PostgresDataService
         {
             connection.Open();
 
-            using (NpgsqlCommand command = new NpgsqlCommand("SELECT add_user(@p_username, @p_email, @p_password)", connection))
+            using (NpgsqlCommand command = new NpgsqlCommand("SELECT create_user(@p_username, @p_email, @p_password)", connection))
             {
                 // Добавляем параметры
                 command.Parameters.AddWithValue("@p_username", username);
@@ -250,24 +248,24 @@ public class PostgresDataService
         }
     }
 
-    public bool UserExists(string email)
+    public int UserExists(string email)
     {
         using (NpgsqlConnection connection = new NpgsqlConnection(_connectionString))
         {
             connection.Open();
 
-            using (NpgsqlCommand command = new NpgsqlCommand("SELECT user_exists(@Email)", connection))
+            using (NpgsqlCommand command = new NpgsqlCommand("SELECT user_exists_on_email(@Email)", connection))
             {
                 command.Parameters.AddWithValue("@Email", email);
 
                 // Выполняем запрос и получаем результат
-                bool exists = (bool)command.ExecuteScalar();
+                int exists = int.Parse(command.ExecuteScalar().ToString());
                 return exists;
             }
         }
     }
 
-    public bool VerifyPassword(string email, string password)
+    public int VerifyPassword(string email, string password)
     {
         using (NpgsqlConnection connection = new NpgsqlConnection(_connectionString))
         {
@@ -279,7 +277,7 @@ public class PostgresDataService
                 command.Parameters.AddWithValue("@Password", password);
 
                 // Выполняем запрос и получаем результат
-                bool verified = (bool)command.ExecuteScalar();
+                int verified = int.Parse(command.ExecuteScalar().ToString());
                 return verified;
             }
         }

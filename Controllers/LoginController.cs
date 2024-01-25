@@ -30,24 +30,30 @@ public class LoginController : Controller
     {
         _logger.LogInformation("[регистрация]");
 
-        if (!_database.UserExists(model.username))
+
+        int idUser = _database.AddUser(model.username, model.email, model.password);
+
+        if (idUser == -1)
+            return StatusCode(400, "Уже есть такой пользователь с почтой");
+        else if (idUser == -2)
         {
-            int idUser = _database.AddUser(model.username, model.email, model.password);
-            var claims = new List<Claim> { 
+            return StatusCode(500, "Не удалось создать пользователя");
+        }
+
+        var claims = new List<Claim> {
                 new Claim(ClaimTypes.Email, model.email),
                 new Claim("username", model.username),
                 new Claim(ClaimTypes.NameIdentifier, idUser.ToString())
                 };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+        ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-            
 
-            return Ok();
-        }
 
-        return StatusCode(405);
+        return Ok();
+
+
     }
 
     [HttpPost]
@@ -55,29 +61,33 @@ public class LoginController : Controller
     {
         _logger.LogInformation("[авторизация]");
 
-        if (_database.UserExists(model.email) && _database.VerifyPassword(model.email, model.password))
-        {
-            int idUser = _database.GetUserIdByEmail(model.email);
 
-            // если idUser меньше 0, тогда ошибка
-            if (idUser < 0){ 
-                return StatusCode(500);
-            }
+        int status = _database.VerifyPassword(model.email, model.password);
+        if (status == -1) {
+            return StatusCode(400, "Неверный пароль");
+        }
+        else if (status == -2) {
+            return StatusCode(404, "Нет такого пользователя с почтой");
+        }
+
+        int idUser = _database.UserExists(model.email);
+
+        
 
             var claims = new List<Claim> {
                 new Claim(ClaimTypes.Email, model.email),
                 new Claim("username", _database.GetUsernameByEmail(model.email)),
                 new Claim(ClaimTypes.NameIdentifier, idUser.ToString())
                 };
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
+        ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            
-            return Ok();
-        }
-        
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-        return StatusCode(405);
+        return Ok();
+
+
+
+
     }
 
 
